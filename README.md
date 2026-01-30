@@ -63,18 +63,38 @@ SLACK_CHANNEL=010-agent-news
 python3 geeknews_reporter.py
 ```
 
-### 3. 자동화 (Cron)
-매일 오전 9시에 자동 실행:
+### 3. 자동화
+
+#### 방법 1: GitHub Actions (권장)
+이 프로젝트는 GitHub Actions를 통해 자동으로 실행됩니다.
+
+**설정 방법:**
+1. GitHub 저장소의 Settings > Secrets and variables > Actions로 이동
+2. 다음 secrets 추가:
+   - `ANTHROPIC_API_KEY`: Anthropic API 키
+   - `SLACK_BOT_TOKEN`: Slack Bot 토큰
+   - `SLACK_CHANNEL`: Slack 채널명 (예: `010-agent-news`)
+
+**스케줄:**
+- 매일 오전 9시 (KST) 자동 실행
+- 일요일 제외
+
+**수동 실행:**
+- Actions 탭에서 "GeekNews Daily Reporter" 워크플로우 선택
+- "Run workflow" 버튼 클릭
+
+#### 방법 2: Cron (로컬 서버)
+매일 오전 9시에 자동 실행 (일요일 제외):
 ```bash
 crontab -e
 
 # 다음 줄 추가
-0 9 * * * /usr/bin/python3 /path/to/geeknews_reporter.py
+0 9 * * 1-6 cd /path/to/slack-reporter && /usr/bin/python3 geeknews_reporter.py
 ```
 
 매 6시간마다 실행:
 ```bash
-0 */6 * * * /usr/bin/python3 /path/to/geeknews_reporter.py
+0 */6 * * * cd /path/to/slack-reporter && /usr/bin/python3 geeknews_reporter.py
 ```
 
 ## 기능
