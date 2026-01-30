@@ -22,7 +22,7 @@ except ImportError:
     import requests
     from dotenv import load_dotenv
 
-# .env 파일 로드
+# .env 파일 로드 (파일이 없어도 환경 변수에서 읽음)
 load_dotenv()
 
 # 설정
@@ -32,15 +32,20 @@ SLACK_CHANNEL = os.getenv("SLACK_CHANNEL", "010-agent-news")
 RSS_FEED_URL = "https://feeds.feedburner.com/geeknews-feed"
 NUM_ARTICLES = 10
 
+# 디버깅: 환경 변수 확인
+print(f"🔍 디버깅: ANTHROPIC_API_KEY 길이 = {len(ANTHROPIC_API_KEY) if ANTHROPIC_API_KEY else 0}")
+print(f"🔍 디버깅: SLACK_BOT_TOKEN 길이 = {len(SLACK_BOT_TOKEN) if SLACK_BOT_TOKEN else 0}")
+print(f"🔍 디버깅: SLACK_CHANNEL = {SLACK_CHANNEL}")
+
 # API 키 검증
 if not ANTHROPIC_API_KEY:
     print("❌ ANTHROPIC_API_KEY가 설정되지 않았습니다.")
-    print("   .env 파일을 생성하고 ANTHROPIC_API_KEY를 설정하세요.")
+    print("   환경 변수 또는 .env 파일을 확인하세요.")
     sys.exit(1)
 
 if not SLACK_BOT_TOKEN:
     print("❌ SLACK_BOT_TOKEN이 설정되지 않았습니다.")
-    print("   .env 파일을 생성하고 SLACK_BOT_TOKEN을 설정하세요.")
+    print("   환경 변수 또는 .env 파일을 확인하세요.")
     sys.exit(1)
 
 def get_slack_config():

@@ -28,6 +28,17 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: 환경 변수 확인 (디버깅)
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          SLACK_CHANNEL: ${{ secrets.SLACK_CHANNEL }}
+        run: |
+          echo "Checking environment variables..."
+          if [ -z "$ANTHROPIC_API_KEY" ]; then echo "❌ ANTHROPIC_API_KEY is empty"; else echo "✅ ANTHROPIC_API_KEY is set (${#ANTHROPIC_API_KEY} chars)"; fi
+          if [ -z "$SLACK_BOT_TOKEN" ]; then echo "❌ SLACK_BOT_TOKEN is empty"; else echo "✅ SLACK_BOT_TOKEN is set (${#SLACK_BOT_TOKEN} chars)"; fi
+          if [ -z "$SLACK_CHANNEL" ]; then echo "❌ SLACK_CHANNEL is empty"; else echo "✅ SLACK_CHANNEL is set ($SLACK_CHANNEL)"; fi
+
       - name: GeekNews 리포트 전송
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
